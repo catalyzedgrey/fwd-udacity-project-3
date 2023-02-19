@@ -9,8 +9,8 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.withStyledAttributes
 import kotlin.properties.Delegates
 
 const val circleVerticalPadding = 30f
@@ -48,7 +48,6 @@ class LoadingButton @JvmOverloads constructor(
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color.colorPrimary)
     }
 
     private val loadingPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -75,6 +74,11 @@ class LoadingButton @JvmOverloads constructor(
             progress = it.animatedValue as Int
             invalidate()
         }
+        context.withStyledAttributes(attrs, R.styleable.LoadingButton) {
+            paint.color = getColor(R.styleable.LoadingButton_defaultColor, 0)
+            loadingPaint.color = getColor(R.styleable.LoadingButton_downloadColor, 0)
+            textPaint.color = getColor(R.styleable.LoadingButton_textColor, 0)
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -92,7 +96,9 @@ class LoadingButton @JvmOverloads constructor(
         canvas.drawRect(loadingRect, loadingPaint)
 
         canvas.drawText(
-            context.getString(R.string.downlading),
+            if (buttonState is ButtonState.Loading)
+                context.getString(R.string.downlading)
+            else context.getString(R.string.begin_download),
             (widthSize / 2).toFloat(),
             centeredTextPositionY,
             textPaint
@@ -115,6 +121,7 @@ class LoadingButton @JvmOverloads constructor(
     override fun performClick(): Boolean {
         buttonState = ButtonState.Loading
         invalidate()
+        super.performClick()
         return true
     }
 
