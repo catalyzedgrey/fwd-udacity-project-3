@@ -16,4 +16,11 @@
     <string name="glide_label_button">Glide - Image Loading Library by BumpTech</string>
 
     <string name="downlading">Downlading…</string>
+    <string name="error_toast">Please select a button</string>
+    <string name="notification_channel_id">channel_id</string>
+    <string name="navigate">Navigate</string>
+    <string name="downloaded">Downloaded!</string>
+    <string name="notification_channel_name">Download Channel</string>
+    <string name="begin_download">Begin download</string>
+    <string name="status">status</string>
 </resources>
