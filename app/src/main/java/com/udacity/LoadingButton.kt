@@ -34,7 +34,7 @@ class LoadingButton @JvmOverloads constructor(
 
     var progress = 0
 
-    private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
+    var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
         progress = 0
 
         when (new) {
@@ -122,11 +122,8 @@ class LoadingButton @JvmOverloads constructor(
 
     }
 
-    override fun performClick(): Boolean {
-        buttonState = ButtonState.Loading
+    fun redraw() {
         invalidate()
-        super.performClick()
-        return true
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

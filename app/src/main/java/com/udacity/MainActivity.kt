@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.glide_radio_button,
                 R.id.udacity_radio_button,
                 R.id.retrofit_radio_button -> {
+                    custom_button.buttonState = ButtonState.Loading
                     download()
                 }
                 else -> {
@@ -92,6 +93,7 @@ class MainActivity : AppCompatActivity() {
             val action = intent?.action
             if (downloadID == id) {
                 context?.getString(R.string.downloaded)?.let {
+                    custom_button.buttonState = ButtonState.Completed
                     notificationManager.sendNotification(it, applicationContext)
                     val detailIntent = Intent(context, DetailActivity::class.java)
                     detailIntent.putExtra(
