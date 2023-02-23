@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var notificationManager: NotificationManager
     private lateinit var radioGroup: RadioGroup
+    var fileName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +48,19 @@ class MainActivity : AppCompatActivity() {
 
         custom_button.setOnClickListener {
             when (radioGroup.checkedRadioButtonId) {
-                R.id.glide_radio_button,
-                R.id.udacity_radio_button,
+                R.id.glide_radio_button -> {
+                    custom_button.buttonState = ButtonState.Loading
+                    fileName = getString(R.string.glide_label_button)
+                    download()
+                }
+                R.id.udacity_radio_button -> {
+                    custom_button.buttonState = ButtonState.Loading
+                    fileName = getString(R.string.udacity_label_button)
+                    download()
+                }
                 R.id.retrofit_radio_button -> {
                     custom_button.buttonState = ButtonState.Loading
+                    fileName = getString(R.string.retrofit_label_button)
                     download()
                 }
                 else -> {
@@ -94,13 +104,18 @@ class MainActivity : AppCompatActivity() {
             if (downloadID == id) {
                 context?.getString(R.string.downloaded)?.let {
                     custom_button.buttonState = ButtonState.Completed
-                    notificationManager.sendNotification(it, applicationContext)
-                    val detailIntent = Intent(context, DetailActivity::class.java)
-                    detailIntent.putExtra(
-                        context.getString(R.string.status),
-                        if (action == DownloadManager.ACTION_DOWNLOAD_COMPLETE) "Success!" else "Failure :("
-                    )
-                    startActivity(detailIntent)
+                    val status = if (action == DownloadManager.ACTION_DOWNLOAD_COMPLETE) "Success!" else "Failure :("
+                    notificationManager.sendNotification(it, status, fileName, applicationContext)
+//                    val detailIntent = Intent(context, DetailActivity::class.java)
+//                    detailIntent.putExtra(
+//                        context.getString(R.string.status),
+//
+//                    )
+//                    detailIntent.putExtra(
+//                        context.getString(R.string.filename),
+//                        fileName
+//                    )
+//                    startActivity(detailIntent)
                 }
             }
         }

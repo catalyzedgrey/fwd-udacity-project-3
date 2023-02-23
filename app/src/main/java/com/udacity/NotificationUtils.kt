@@ -1,29 +1,40 @@
 package com.udacity
 
-import android.app.DownloadManager
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import androidx.core.app.NotificationCompat
 
 
 private val NOTIFICATION_ID = 0
 
-fun NotificationManager.sendNotification(messageBody: String, context: Context) {
+fun NotificationManager.sendNotification(
+    messageBody: String,
+    status: String,
+    fileName: String,
+    context: Context
+) {
     val contentIntent = Intent(context, DetailActivity::class.java)
 
     contentIntent.putExtra(
         context.getString(R.string.status),
-        "Success!"
+        status
     )
+
+    contentIntent.putExtra(
+        context.getString(R.string.filename),
+        fileName
+    )
+
+    contentIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+            Intent.FLAG_ACTIVITY_SINGLE_TOP
 
     val contentPendingIntent = PendingIntent.getActivity(
         context,
         NOTIFICATION_ID,
         contentIntent,
-        PendingIntent.FLAG_IMMUTABLE
+        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_ONE_SHOT
     )
 
     val builder = NotificationCompat.Builder(
