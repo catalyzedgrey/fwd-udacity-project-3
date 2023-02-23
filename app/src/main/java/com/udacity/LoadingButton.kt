@@ -27,7 +27,11 @@ class LoadingButton @JvmOverloads constructor(
 
     private var centeredTextPositionY = 0f
     private lateinit var loadingRect: RectF
-    private val valueAnimator = ValueAnimator.ofInt(0, 360).setDuration(3000)
+    private val valueAnimator = ValueAnimator.ofInt(0, 360).apply {
+        duration = 2000
+        repeatCount = ValueAnimator.INFINITE
+    }
+
     var progress = 0
 
     private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
